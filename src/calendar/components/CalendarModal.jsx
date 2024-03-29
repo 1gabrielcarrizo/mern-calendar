@@ -26,7 +26,7 @@ Modal.setAppElement('#root'); // se sobrepone en los elementos
 export const CalendarModal = () => {
 
     const { isDateModalOpen, closeDateModal } = useUiStore()
-    const { activeEvent } = useCalendarStore()
+    const { activeEvent, startSavingEvent } = useCalendarStore()
 
     const [formSubmitted, setFormSubmitted] = useState(false)
     // 1- creamos un form de manera tradicional
@@ -67,10 +67,12 @@ export const CalendarModal = () => {
     }
 
     const onCloseModal = () => {
+        console.log("cerrando el modal")
         closeDateModal()
+        setFormSubmitted(false) // quita los errores de los campos
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault()
         setFormSubmitted(true)
         // la fecha final siempre debe ser mayor a la inicial
@@ -81,6 +83,10 @@ export const CalendarModal = () => {
         }
         if (formValues.title.length <= 0) return;
         console.log(formValues)
+
+        // TODO:
+        await startSavingEvent(formValues)
+        closeDateModal()
     }
 
     return (
