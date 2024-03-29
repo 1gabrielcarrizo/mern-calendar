@@ -67,7 +67,6 @@ export const CalendarModal = () => {
     }
 
     const onCloseModal = () => {
-        console.log("cerrando el modal")
         closeDateModal()
         setFormSubmitted(false) // quita los errores de los campos
     }
@@ -82,7 +81,7 @@ export const CalendarModal = () => {
             return;
         }
         if (formValues.title.length <= 0) return;
-        console.log(formValues)
+        // console.log(formValues)
 
         // TODO:
         await startSavingEvent(formValues)
