@@ -1,12 +1,12 @@
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { addHours, differenceInSeconds } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Modal from 'react-modal';
-import DatePicker, {registerLocale} from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es'
-import { useUiStore } from '../../hooks';
+import { useCalendarStore, useUiStore } from '../../hooks';
 
 registerLocale('es', es)
 
@@ -25,23 +25,31 @@ Modal.setAppElement('#root'); // se sobrepone en los elementos
 
 export const CalendarModal = () => {
 
-    const {isDateModalOpen, closeDateModal} = useUiStore()
+    const { isDateModalOpen, closeDateModal } = useUiStore()
+    const { activeEvent } = useCalendarStore()
 
     const [formSubmitted, setFormSubmitted] = useState(false)
     // 1- creamos un form de manera tradicional
     const [formValues, setFormValues] = useState({
-        title: 'Gabriel',
-        notes: 'Carrizo',
+        title: '',
+        notes: '',
         start: new Date(),
         end: addHours(new Date(), 2)
     })
     // usamos useMemo para memorizar el valor
     const titleClass = useMemo(() => {
-        if(!formSubmitted) return'';
-        return(formValues.title.length > 0)
-        ? 'is-valid'
-        : 'is-invalid'
+        if (!formSubmitted) return '';
+        return (formValues.title.length > 0)
+            ? 'is-valid'
+            : 'is-invalid'
     }, [formValues.title, formSubmitted])
+
+    useEffect(() => {
+        if (activeEvent !== null) {
+            setFormValues({ ...activeEvent })
+        }
+    }, [activeEvent])
+
 
     // 3- creamos una funcion para cambiar el form
     const onInputChanged = ({ target }) => {
@@ -67,11 +75,11 @@ export const CalendarModal = () => {
         setFormSubmitted(true)
         // la fecha final siempre debe ser mayor a la inicial
         const difference = differenceInSeconds(formValues.end, formValues.start)
-        if(isNaN(difference) || difference <= 0){
+        if (isNaN(difference) || difference <= 0) {
             Swal.fire('Fecha incorrectas', 'Revisar las fechas ingresadas', 'error')
             return;
         }
-        if(formValues.title.length <= 0) return;
+        if (formValues.title.length <= 0) return;
         console.log(formValues)
     }
 
