@@ -6,6 +6,7 @@ import { addHours } from 'date-fns'
 
 import { CalendarEvent, CalendarModal, Navbar } from '../'
 import { getMessagesES, localizer } from '../../helpers'
+import { useUiStore } from '../../hooks'
 
 const events = [{
   title: 'Cumple del jefe',
@@ -21,6 +22,7 @@ const events = [{
 
 export const CalendarPage = () => {
 
+  const {openDateModal} = useUiStore()
   // 1- obtener la ultima vista del localStorage, si es la primera vez lo obtiene de week
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
@@ -39,7 +41,8 @@ export const CalendarPage = () => {
 
   // evento para reconocer doble click
   const onDoubleClick = (event) => {
-    console.log({onDoubleClick: event})
+    // console.log({onDoubleClick: event})
+    openDateModal()
   }
   // evento para reconocer click
   const onSelect = (event) => {

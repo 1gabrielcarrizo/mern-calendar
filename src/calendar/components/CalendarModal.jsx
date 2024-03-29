@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import DatePicker, {registerLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es'
+import { useUiStore } from '../../hooks';
 
 registerLocale('es', es)
 
@@ -24,7 +25,8 @@ Modal.setAppElement('#root'); // se sobrepone en los elementos
 
 export const CalendarModal = () => {
 
-    const [isOpen, setIsOpen] = useState(true)
+    const {isDateModalOpen, closeDateModal} = useUiStore()
+
     const [formSubmitted, setFormSubmitted] = useState(false)
     // 1- creamos un form de manera tradicional
     const [formValues, setFormValues] = useState({
@@ -57,8 +59,7 @@ export const CalendarModal = () => {
     }
 
     const onCloseModal = () => {
-        console.log("cerrando modal")
-        setIsOpen(false)
+        closeDateModal()
     }
 
     const onSubmit = (event) => {
@@ -76,7 +77,7 @@ export const CalendarModal = () => {
 
     return (
         <Modal
-            isOpen={isOpen}
+            isOpen={isDateModalOpen}
             onRequestClose={onCloseModal}
             style={customStyles}
             className='modal'
@@ -103,7 +104,7 @@ export const CalendarModal = () => {
                 <div className="form-group mb-2">
                     <label>Fecha y hora fin</label>
                     <DatePicker
-                        minDate={formValues.start} // no seleciona flechas anterior a lo que dije
+                        minDate={formValues.start} // no seleciona flechas anteriores a lo que se elige
                         selected={formValues.end}
                         onChange={(event) => onDateChanged(event, "end")}
                         className='form-control'
