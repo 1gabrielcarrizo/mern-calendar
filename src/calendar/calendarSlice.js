@@ -33,7 +33,7 @@ export const calendarSlice = createSlice({
         },
         onUpdateEvent: (state, {payload}) => {
             state.events = state.events.map(event => {
-                if(event._id === payload._id){
+                if(event.id === payload.id){
                     return payload
                 }
                 return event
@@ -42,7 +42,7 @@ export const calendarSlice = createSlice({
         onDeleteEvent: (state) => {
             // si hay una nota activa entonces lo elimina
             if(state.activeEvent){
-                state.events = state.events.filter(event => event._id !== state.activeEvent._id) // regresamos todos los eventos que sean diferentes al _id de la nota activa
+                state.events = state.events.filter(event => event.id !== state.activeEvent.id) // regresamos todos los eventos que sean diferentes al _id de la nota activa
             }
             state.activeEvent = null
         },
