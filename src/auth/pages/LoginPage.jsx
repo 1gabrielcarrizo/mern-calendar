@@ -19,7 +19,7 @@ const registerFormFields = {
 
 export const LoginPage = () => {
 
-    const {startLogin, errorMessage} = useAuthStore()
+    const {startLogin, errorMessage, startRegister} = useAuthStore()
 
     //importamos nuestro custom hook
     const {loginEmail, loginPassword, onInputChange: onLoginInputChange} = useForm(loginFormFields)
@@ -34,7 +34,12 @@ export const LoginPage = () => {
     // creamos la funcion para el submit del registro
     const registerSubmit = (event) => {
         event.preventDefault()
-        console.log({registerName, registerEmail, registerPassword, registerPassword2})
+        if(registerPassword !== registerPassword2){
+            Swal.fire('Error en el registro', 'Las contraseñas no son iguales', 'error')
+            return;
+        }
+
+        startRegister({name: registerName, email: registerEmail, password: registerPassword})
     }
 
     useEffect(() => {
