@@ -63,7 +63,7 @@ export const useAuthStore = () => {
         // obtener token del localstorage
         const token = localStorage.getItem('token')
 
-        // si no existe
+        // si no existe el token...
         if(!token) return dispatch(onLogout())
 
         // agregar un trycatch

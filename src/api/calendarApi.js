@@ -18,7 +18,7 @@ calendarApi.interceptors.request.use(config => {
         'x-token': localStorage.getItem('token')
     }
 
-    return config
+    return config;
 })
 
 export default calendarApi;
