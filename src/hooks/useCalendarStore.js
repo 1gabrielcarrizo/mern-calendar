@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent } from '../store'
 import calendarApi from '../api/calendarApi'
+import { convertEventsToDateEvents } from '../helpers'
 
 export const useCalendarStore = () => {
 
@@ -32,6 +33,21 @@ export const useCalendarStore = () => {
         dispatch(onDeleteEvent())
     }
 
+    // carga los eventos del backend
+    const startLoadingEvents = async () => {
+        // agregamos un trycatch
+        try {
+            // mostramos los eventos
+            const {data} = await calendarApi.get('/events')
+            const events = convertEventsToDateEvents(data.eventos)
+            console.log(events)
+
+        } catch (error) {
+            console.log('Error cargando eventos')
+            console.log(error)
+        }
+    }
+
     return {
         // propiedades
         events,
@@ -40,7 +56,7 @@ export const useCalendarStore = () => {
         // metodos
         setActiveEvent,
         startSavingEvent,
-        startDeletingEvent
-        //TODO: llegar al backend
+        startDeletingEvent,
+        startLoadingEvents
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { CalendarEvent, CalendarModal, FabAddNew, FabDelete, Navbar } from '../'
@@ -8,7 +8,7 @@ import { useUiStore, useCalendarStore } from '../../hooks'
 export const CalendarPage = () => {
 
   const {openDateModal} = useUiStore()
-  const {events, setActiveEvent} = useCalendarStore()
+  const {events, setActiveEvent, startLoadingEvents} = useCalendarStore()
   // 1- obtener la ultima vista del localStorage, si es la primera vez lo obtiene de week
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
@@ -42,6 +42,10 @@ export const CalendarPage = () => {
     setLastView(event)
   }
 
+  useEffect(() => {
+    startLoadingEvents()
+  }, [])
+  
   return (
     <>
       <Navbar />
