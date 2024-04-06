@@ -17,7 +17,7 @@ export const AppRouter = () => {
 
   if (status === 'checking') {
     return (
-      <h3>Cargando...</h3>
+      <h3 style={{position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>Cargando...</h3>
     )
   }
 
