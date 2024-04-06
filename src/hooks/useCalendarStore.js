@@ -47,6 +47,13 @@ export const useCalendarStore = () => {
             
             dispatch(onDeleteEvent())
 
+            // Muestra el mensaje de éxito
+            Swal.fire({
+            title: "¡Eliminado!",
+            text: "Tu evento ha sido eliminado.",
+            icon: "success"
+        });
+
         } catch (error) {
             console.log(error)
             Swal.fire('Error al eliminar', error.response.data.msg, 'error')
